@@ -347,6 +347,7 @@
 -r:"Library/Bee/artifacts/1900b0aEDbg.dag/UnityEngine.UI.ref.dll"
 "Assets/Scripts/Destroy.cs"
 "Assets/Scripts/GameManager.cs"
+"Assets/Scripts/MainMenu.cs"
 "Assets/Scripts/Patrol.cs"
 "Assets/Scripts/PlayerMovement.cs"
 -langversion:9.0
