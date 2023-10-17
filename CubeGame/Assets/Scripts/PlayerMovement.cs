@@ -7,11 +7,9 @@ public class PlayerMovement : MonoBehaviour
 {
     public GameManager GameManager;
     public float moveSpeed;
-    private float maxSpeed = 5f;
+    //private float maxSpeed = 5f;
     public GameObject deathParticles;
-
     private Vector3 input;
-
     private Vector3 spawn;
     // Start is called before the first frame update
     void Start()

@@ -6,24 +6,30 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public int currentScore;
-    public int highScore;
-
-    public int currentLevel = 0;
-    public int unlockedLevel;
-
-    public Rect timerRect;
-    public Rect coinRect;
-
+    
+    //Player Stats Variables
+    public float currentScore;
+    [SerializeField] private int coinsCollected;
+    [SerializeField] private int [] coinsTotal_Level = {2, 2, 3};
+    
+    // Game Info Variables
+    public int [] levelTimers = {15, 10, 20};
     public float startTime;
     private string currentTime;
-
-    private int coinsCollected;
-    private int coinsTotal = 2;
-
+    
+    public int [] levelScores = new int[3];
+    public int currentLevel = 0;
+    public int unlockedLevel;
+    // Rect Variables
+    public Rect timerRect;
+    public Rect coinRect = new Rect(Screen.width - Screen.width * 0.2f, 25, 200, 200);
+    //GUI Skin
     public GUISkin skin;
     
+    //Instance variable
     private static GameManager instance;
+    
+    // Functions
 
     public static GameManager Instance
     {
@@ -55,6 +61,8 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        startTime = levelTimers[0];
     }
 
     private void Update()
@@ -71,15 +79,20 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        startTime = levelTimers[currentLevel];
     }
 
     public void CompleteLevel()
     {
+        currentScore = coinsCollected * 5 + startTime;
+        if (currentScore > PlayerPrefs.GetFloat("Level " + currentLevel.ToString() + "highscore", 0))
+            PlayerPrefs.SetFloat("Level " + currentLevel.ToString() + "highscore", currentScore);
         if (currentLevel < 3)
         {
             currentLevel += 1;
-            PlayerPrefs.SetInt("levelReached", currentLevel);
-            PlayerPrefs.SetInt("Level " + currentLevel.ToString() + " score", currentScore);
+            startTime = levelTimers[currentLevel];
+            coinsCollected = 0;
+            PlayerPrefs.SetInt("levelUnlocked", currentLevel);
             SceneManager.LoadScene(currentLevel);
         }
         else
@@ -109,7 +122,7 @@ public class GameManager : MonoBehaviour
             }
 
             GUI.Label(timerRect, currentTime, skin.GetStyle("Timer"));
-            GUI.Label(coinRect, coinsCollected.ToString() + "/" + coinsTotal.ToString(), skin.GetStyle("Coin"));
+            GUI.Label(coinRect, coinsCollected.ToString() + "/" + coinsTotal_Level[currentLevel].ToString(), skin.GetStyle("Coin"));
         }
     }
 }
