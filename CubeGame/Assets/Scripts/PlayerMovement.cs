@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public GameManager GameManager;
     public float moveSpeed;
     private float maxSpeed = 5f;
     public GameObject deathParticles;
@@ -16,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         spawn = transform.position;
+        GameManager = FindObjectOfType<GameManager>();
     }
 
     // Update is called once per frame
@@ -43,6 +45,12 @@ public class PlayerMovement : MonoBehaviour
         if (other.gameObject.CompareTag("Goal"))
         {
             GameManager.CompleteLevel();
+        }
+
+        if (other.gameObject.CompareTag("Token"))
+        {
+            GameManager.AddCoin();
+            Destroy(other.gameObject);
         }
     }
 
