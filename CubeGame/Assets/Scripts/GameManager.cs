@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour
     public int unlockedLevel;
     // Rect Variables
     public Rect timerRect;
-    public Rect coinRect = new Rect(Screen.width - Screen.width * 0.2f, 25, 200, 200);
+    public Rect coinRect = new Rect();
     //GUI Skin
     public GUISkin skin;
     
@@ -87,9 +87,9 @@ public class GameManager : MonoBehaviour
         currentScore = coinsCollected * 5 + startTime;
         if (currentScore > PlayerPrefs.GetFloat("Level " + currentLevel.ToString() + "highscore", 0))
             PlayerPrefs.SetFloat("Level " + currentLevel.ToString() + "highscore", currentScore);
-        if (currentLevel < 3)
+        if (currentLevel < 2)
         {
-            currentLevel += 1;
+            currentLevel ++;
             startTime = levelTimers[currentLevel];
             coinsCollected = 0;
             PlayerPrefs.SetInt("levelUnlocked", currentLevel);
@@ -121,8 +121,11 @@ public class GameManager : MonoBehaviour
                 skin.GetStyle("Timer").normal.textColor = Color.white;
             }
 
+            coinRect = new Rect(Screen.width - Screen.width * 0.1f, 25, 20, 200);
             GUI.Label(timerRect, currentTime, skin.GetStyle("Timer"));
-            GUI.Label(coinRect, coinsCollected.ToString() + "/" + coinsTotal_Level[currentLevel].ToString(), skin.GetStyle("Coin"));
+            if(currentLevel < 3) 
+                GUI.Label(coinRect, coinsCollected.ToString() + "/" + coinsTotal_Level[currentLevel].ToString(), skin.GetStyle("Coin"));
         }
     }
 }
+
